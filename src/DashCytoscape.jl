@@ -8,13 +8,13 @@ const version = "0.1.1"
 include("cyto_cytoscape.jl")
 
 function __init__()
-    Dash.register_package(
-        Dash.ResourcePkg(
+    DashBase.register_package(
+        DashBase.ResourcePkg(
             "dash_cytoscape",
             resources_path,
             version = version,
             [
-                Dash.Resource(
+                DashBase.Resource(
     relative_package_path = "dash_cytoscape.min.js",
     external_url = "https://unpkg.com/dash-cytoscape@0.1.1/dash_cytoscape/dash_cytoscape.min.js",
     dynamic = nothing,
@@ -23,6 +23,7 @@ function __init__()
 )
             ]
         )
+
     )
 end
 end

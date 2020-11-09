@@ -4,8 +4,6 @@ export cyto_cytoscape
 
 """
     cyto_cytoscape(;kwargs...)
-    cyto_cytoscape(children::Any;kwargs...)
-    cyto_cytoscape(children_maker::Function;kwargs...)
 
 A Cytoscape component.
 A Component Library for Dash aimed at facilitating network visualization in
@@ -193,28 +191,8 @@ image was requested yet or the previous request failed. Read-only.
 - `responsive` (Bool; optional): Toggles intelligent responsive resize of Cytoscape graph with viewport size change
 """
 function cyto_cytoscape(; kwargs...)
-        available_props = Set(Symbol[:id, :className, :style, :elements, :stylesheet, :layout, :pan, :zoom, :panningEnabled, :userPanningEnabled, :minZoom, :maxZoom, :zoomingEnabled, :userZoomingEnabled, :boxSelectionEnabled, :autoungrabify, :autolock, :autounselectify, :autoRefreshLayout, :tapNode, :tapNodeData, :tapEdge, :tapEdgeData, :mouseoverNodeData, :mouseoverEdgeData, :selectedNodeData, :selectedEdgeData, :generateImage, :imageData, :responsive])
-        wild_props = Set(Symbol[])
-        wild_regs = r"^(?<prop>)"
-
-        result = Component("Cytoscape", "dash_cytoscape", Dict{Symbol, Any}(), available_props, Set(Symbol[]))
-
-        for (prop, value) = pairs(kwargs)
-            m = match(wild_regs, string(prop))
-            if (length(wild_props) == 0 || isnothing(m)) && !(prop in available_props)
-                throw(ArgumentError("Invalid property $(string(prop)) for component " * "cyto_cytoscape"))
-            end
-
-            push!(result.props, prop => Front.to_dash(value))
-        end
-
-    return result
+        available_props = Symbol[:id, :className, :style, :elements, :stylesheet, :layout, :pan, :zoom, :panningEnabled, :userPanningEnabled, :minZoom, :maxZoom, :zoomingEnabled, :userZoomingEnabled, :boxSelectionEnabled, :autoungrabify, :autolock, :autounselectify, :autoRefreshLayout, :tapNode, :tapNodeData, :tapEdge, :tapEdgeData, :mouseoverNodeData, :mouseoverEdgeData, :selectedNodeData, :selectedEdgeData, :generateImage, :imageData, :responsive]
+        wild_props = Symbol[]
+        return Component("cyto_cytoscape", "Cytoscape", "dash_cytoscape", available_props, wild_props; kwargs...)
 end
 
-function cyto_cytoscape(children::Any; kwargs...)
-    result = cyto_cytoscape(;kwargs...)
-    push!(result.props, :children => Front.to_dash(children))
-    return result
-end
-
-cyto_cytoscape(children_maker::Function; kwargs...) = cyto_cytoscape(children_maker(); kwargs...)
